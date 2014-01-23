@@ -13,6 +13,7 @@ class Users extends CFormModel
 	public $name;
 	public $email;
 	public $password;
+	public $status_message;
 
 	protected static $collection = 'users';
 
@@ -24,6 +25,8 @@ class Users extends CFormModel
 		return array(
 			// name, email, subject and body are required
 			array('name, email, password', 'required'),
+                        array('status_message', 'length','max'=>20),
+			array('_id', 'safe'),
 		);
 	}
 
@@ -105,17 +108,81 @@ class Users extends CFormModel
 
 	/**
 	 * Get all system Users exlude current
+	 * Get online data from cache
 	 * @param array $currentuser Current User
 	 * @return CArrayDataProvider
 	 */
 	public static function getUsers($currentuser)
 	{
+		// Get users statuses
+		$keys = Yii::app()->redis->client()->keys('users:online:*');
+		$users_online = Yii::app()->redis->client()->mget( $keys );
+		if( !$users_online )
+		{
+			$users_online_count = 0;
+			$users_online = array();
+		} else {
+			$users_online_count = count( $users_online ) - 1;
+		}
+
+		// Get user list
 		$model = self::model();
-		$result = $model->find(array(
+		$users = $model->find(array(
 			"_id" => array(
 				'$ne' => $currentuser['_id'],
 			)
 		));
-		return iterator_to_array( $result, false );
+		$users = iterator_to_array( $users, false );
+		// Manually set  special users parameters
+		foreach( $users as $key=>$user )
+		{
+			if( in_array( (string)$users[ $key ]['_id'], $users_online ) )
+			{
+				$users[ $key ]['online'] = "online";
+			} else {
+				$users[ $key ]['online'] = "offline";
+				$users[ $key ]['status_message'] = "";
+			}
+		}
+		return array(
+			'users' => $users,
+			'online' => $users_online_count ,
+		);
+	}
+
+	/**
+	 * Set user online status to cache
+	 * @param array $user Current User data
+	 */
+	public static function setUserOnline( $user )
+	{
+		$user_id = (string)$user['_id'];
+		// Set cached data with 10 sec Expirarion
+		Yii::app()->redis->client()->set('users:online:'.$user_id, $user_id, 10);
+	}
+
+	/**
+	 * Set user status message
+	 * @param array $user Current User data
+	 * @return bool Success result
+	 */
+	public static function setUserStatusMessage( $user, $message )
+	{
+		// Strip HTML tags
+		$message = strip_tags( $message );
+		// Init form-model data
+		$user_model = new self;
+		$user_model->attributes = $user;
+		$user_model->status_message = $message;
+		// Validate and save
+		if( $user_model->validate() )
+		{
+			self::model()->save( $user_model->attributes );
+			return true;
+		} else {
+			return false;
+		}
+
+
 	}
 }

@@ -50,7 +50,7 @@
 	<div id="footer">
 		Copyright &copy; <?php echo date('Y'); ?> by Evgeny Ukhanov.<br/>
 		All Rights Reserved.<br/>
-		<strong>We on GitHub:</strong>
+		<strong>We on <a href="https://github.com/mrLSD/status-check">GitHub</a></strong>
 	</div><!-- footer -->
 
 </div><!-- page -->

@@ -37,7 +37,6 @@ return array(
                         ),
                 ),
 
-
                 /**
                  * MongoDB config
                  */
@@ -45,6 +44,15 @@ return array(
                         'class' => 'ext.EMongoDBConnection',
                         'db_name' => 'statuscheck',
                         'server' => 'mongodb://localhost:27017',
+                ),
+
+		/**
+		 * Redis caching
+		 */
+		'redis'=>array(
+                        'class'=>'ext.ERedis',
+			'server'=>'localhost',
+			'port'=>6379,
                 ),
 
 		'errorHandler'=>array(
