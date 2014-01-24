@@ -113,6 +113,10 @@ function UsersViewModel() {
 	self.userMessageRecipients = ko.observable(false);
 	self.messageSendEnable = ko.observable(true);
 	self.selectedUsersMessageCount = ko.observable(" (All users)");
+	self.newMessageCount = ko.computed(function() {
+		var res = ( self.userListData() == undefined ) ? 0 : self.userListData().new_messages;
+		return ( res == 0 ) ? "" : " ("+res+")";
+    });
 
 	// Messages behavior
 

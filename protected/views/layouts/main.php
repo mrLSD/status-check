@@ -30,12 +30,13 @@
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
 				array('label'=>'Home', 'url'=>array('/status/index'), 'visible'=>!Yii::app()->user->isGuest),
-				array('label'=>'Messages', 'url'=>array('/messages/list'), 'visible'=>!Yii::app()->user->isGuest),
+				array('label'=>'Messages<span data-bind="text: newMessageCount">1</span>', 'url'=>array('/messages/list'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Login', 'url'=>array('/user/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/user/logout'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Registration', 'url'=>array('/user/registration')),
 			),
-		)); ?>
+			'encodeLabel'=>false,
+		)); new CMenu()?>
 	</div><!-- mainmenu -->
 	<?php if(isset($this->breadcrumbs)):?>
 		<?php $this->widget('zii.widgets.CBreadcrumbs', array(

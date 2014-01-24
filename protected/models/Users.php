@@ -117,6 +117,7 @@ class Users extends CFormModel
 		// Get users statuses
 		$keys = Yii::app()->redis->client()->keys('users:online:*');
 		$users_online = Yii::app()->redis->client()->mget( $keys );
+		$new_messages = (int)Yii::app()->redis->client()->get("message:new:".$currentuser['_id']);
 		if( !$users_online )
 		{
 			$users_online_count = 0;
@@ -147,6 +148,7 @@ class Users extends CFormModel
 		return array(
 			'users' => $users,
 			'online' => $users_online_count ,
+			'new_messages' => $new_messages,
 		);
 	}
 
