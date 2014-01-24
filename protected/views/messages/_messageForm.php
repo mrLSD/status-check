@@ -3,7 +3,6 @@
 /* @var $model MessageForm */
 /* @var $users Users */
 /* @var $form CActiveForm */
-//new CListView();
 ?>
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(

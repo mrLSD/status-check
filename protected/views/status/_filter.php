@@ -1,4 +1,7 @@
 <?php
+/* @var $this StatusController */
+/* @var $this->user Users */
+
 // Check and set filters data
 if( isset( $this->user['filter']) ){
 	$f_all = ( $this->user['filter']['all'] ) ? "checked" : "";

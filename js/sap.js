@@ -1,3 +1,7 @@
+/**
+ * Describe Main model
+ * @constructor
+ */
 function UsersViewModel() {
     var self = this;
 	//=======================================================
@@ -11,6 +15,8 @@ function UsersViewModel() {
     });
 
     // Users data Behaviours
+
+	// Get User data information
     self.getUsers = function() {
         $.post('/status/getUsersList', self.userListData);
 		setTimeout(self.getUsers, 5000);
@@ -25,6 +31,8 @@ function UsersViewModel() {
 	self.statusChange = ko.observable( $("#status-message").text() == '' );
 
 	// User status message Behaviors
+
+	// Add status message for current User
 	self.addStatus = function(){
 		if( self.userStatusVisible() )
 		{
@@ -62,6 +70,7 @@ function UsersViewModel() {
 			status: Number( $("#f_status").attr("checked") == 'checked' )
 		});
 	}
+	// Display filter form
 	self.changeFilter = function()
 	{
 		// Animation effect
@@ -72,6 +81,7 @@ function UsersViewModel() {
 		else
 			$("#filter-data").fadeOut(500);
 	};
+	// Set checkbox All filters data
 	self.setFilterAll = function()
 	{
 		var res = ( $("#f_all").attr("checked") == 'checked' );
@@ -81,6 +91,7 @@ function UsersViewModel() {
 		self.filterStatus( res );
 		saveFilterSettings();
 	};
+	// Custom filter changes
 	self.setFilterOnline = function()
 	{
 		var res = ( $("#f_online").attr("checked") == 'checked' );
@@ -104,6 +115,8 @@ function UsersViewModel() {
 	self.selectedUsersMessageCount = ko.observable(" (All users)");
 
 	// Messages behavior
+
+	// Checked all Users for Message recipient
 	self.allUsersChecked = function()
 	{
 		var checked = ( $("#all-users-message-check").attr("checked") == "checked" );
@@ -114,6 +127,7 @@ function UsersViewModel() {
 		else
 			self.selectedUsersMessageCount(" (0 users)");
 	};
+	// Checked custom Users for Message recipient
 	self.userMessageCheked = function()
 	{
 		var count_checked = $(".check-users_message:checked").length;
@@ -128,10 +142,12 @@ function UsersViewModel() {
 			self.selectedUsersMessageCount(" ("+count_checked+" users)");
 		}
 	};
+	// Set visibility form field related with selected Users Recipient
 	self.selectUserMessageRecipients = function()
 	{
 		self.userMessageRecipients( !self.userMessageRecipients() );
 	}
 }
 
+// Init model
 ko.applyBindings(new UsersViewModel());
