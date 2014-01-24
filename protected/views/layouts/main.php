@@ -62,5 +62,6 @@ if( Yii::app()->user->isGuest )
 $cs = Yii::app()->clientScript;
 $cs->registerCoreScript('jquery');
 $cs->registerCssFile('/css/sap.css');
+
 $cs->registerScriptFile('/js/knockout-2.2.1.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/sap.js', CClientScript::POS_END);

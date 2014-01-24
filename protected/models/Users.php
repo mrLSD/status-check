@@ -25,7 +25,7 @@ class Users extends CFormModel
 		return array(
 			// name, email, subject and body are required
 			array('name, email, password', 'required'),
-                        array('status_message', 'length','max'=>20),
+                        array('status_message', 'length','max'=>255),
 			array('_id', 'safe'),
 		);
 	}
@@ -164,6 +164,7 @@ class Users extends CFormModel
 	/**
 	 * Set user status message
 	 * @param array $user Current User data
+	 * @param string $message
 	 * @return bool Success result
 	 */
 	public static function setUserStatusMessage( $user, $message )
@@ -182,7 +183,22 @@ class Users extends CFormModel
 		} else {
 			return false;
 		}
+	}
 
-
+	/**
+	 * Change filter config data for Current User
+	 * @param array $user Current User data
+	 * @param array $filters Filters data
+	 * @return bool
+	 */
+	public static function setFilterConfigData( $user, $filters )
+	{
+		// Set filter data
+		$user['filter']['all'] = (bool)$filters['all'];
+		$user['filter']['online'] = (bool)$filters['online'];
+		$user['filter']['status'] = (bool)$filters['status'];
+		// Save model
+		self::model()->save( $user );
+		return true;
 	}
 }

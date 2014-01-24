@@ -13,24 +13,33 @@ $this->breadcrumbs=array(
 	'Status check',
 );?>
 <h1>Welcome, <?= $this->user['name'] ?>! </h1>
-<h4 id="status-message" data-bind="text: userStatus, visible: userStatusVisible"><?= $this->user['status_message'] ?></h4>
-<input data-bind="visible: statusEdit, value: userStatus" />
-<button data-bind="click: addStatus, text: addStatusText"></button>
+
+<?php // User status message ?>
+<a id="status-message" data-bind="text: userStatus, visible: userStatusVisible, click: addStatus" href="#"><?= $this->user['status_message'] ?></a>
+<form data-bind="submit: addStatus">
+	<input data-bind="visible:  userStatusVisible()!=true, value: userStatus">
+</form>
+<a data-bind="click: addStatus, visible: statusChange" href="#">Change status</a>
+
+<br/><br/>
 
 <h3>Users at system:</h3>
+
+<?php $this->renderPartial("_filter") ?>
+
 <table class="mails" data-bind="with: userListData">
     <thead><tr>
 	    <th>Name</th>
 	    <th>E-mail</th>
-	    <th>Online status</th>
-	    <th>Status message</th>
+	    <th data-bind="visible: $root.filter_online">Online status</th>
+	    <th data-bind="visible: $root.filter_status()">Status message</th>
     </tr></thead>
     <tbody data-bind="foreach: users">
         <tr>
 		<td data-bind="text: name"></td>
 		<td data-bind="text: email"></td>
-		<td><strong data-bind="text: online"></strong></td>
-		<td data-bind="text: status_message"></td>
+		<td data-bind="visible: $root.filter_online"><strong data-bind="text: online"></strong></td>
+		<td data-bind="text: status_message, visible: $root.filter_status()"></td>
 
         </tr>
     </tbody>

@@ -15,7 +15,7 @@ class StatusController extends ProfileController
         public function filters()
         {
                 return array(
-                        'ajaxOnly +GetUsersList, SetUserStatusMessage',
+                        'ajaxOnly +GetUsersList, SetUserStatusMessage, SetFilterSettings',
                 );
         }
 
@@ -50,10 +50,9 @@ class StatusController extends ProfileController
 		{
 			$response_message = 'failed';
 		} else {
+			$response_message = 'ok';
 			// Set current user status "online"
-			if( Users::setUserStatusMessage( $this->user, $_POST['message'] ) )
-				$response_message = 'ok';
-			else
+			if( !Users::setUserStatusMessage( $this->user, $_POST['message'] ) )
 				$response_message = 'failed';
 		}
 		die( json_encode(array(
@@ -61,5 +60,22 @@ class StatusController extends ProfileController
 		)) );
 	}
 
+	/**
+	 * Set User Filter config data
+	 */
+	public function actionSetFilterSettings()
+	{
+		if( isset( $_POST['all'] ) AND
+			isset( $_POST['online'] ) AND
+			isset( $_POST['status'] ) )
+		{
+			$response_message = 'ok';
+			if( !Users::setFilterConfigData( $this->user, $_POST ) )
+				$response_message = 'failed';
+			die( json_encode(array(
+				'response' => $response_message,
+			)) );
+		}
+	}
 
 }
