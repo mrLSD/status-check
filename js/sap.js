@@ -96,6 +96,42 @@ function UsersViewModel() {
 		saveFilterSettings();
 	};
 
+	//=======================================================
+	// Messages
+	self.allUsersMessageCheck = ko.observable(true);
+	self.userMessageRecipients = ko.observable(false);
+	self.messageSendEnable = ko.observable(true);
+	self.selectedUsersMessageCount = ko.observable(" (All users)");
+
+	// Messages behavior
+	self.allUsersChecked = function()
+	{
+		var checked = ( $("#all-users-message-check").attr("checked") == "checked" );
+		$(".check-users_message").attr("checked", checked );
+		self.messageSendEnable(checked);
+		if( checked )
+			self.selectedUsersMessageCount(" (All users)");
+		else
+			self.selectedUsersMessageCount(" (0 users)");
+	};
+	self.userMessageCheked = function()
+	{
+		var count_checked = $(".check-users_message:checked").length;
+		var count_checkboxes = $(".check-users_message").length;
+		self.allUsersMessageCheck(false);
+		self.messageSendEnable(count_checked);
+		if( count_checked == count_checkboxes )
+		{
+			self.selectedUsersMessageCount(" (All users)");
+			self.allUsersMessageCheck(true);
+		} else {
+			self.selectedUsersMessageCount(" ("+count_checked+" users)");
+		}
+	};
+	self.selectUserMessageRecipients = function()
+	{
+		self.userMessageRecipients( !self.userMessageRecipients() );
+	}
 }
 
 ko.applyBindings(new UsersViewModel());

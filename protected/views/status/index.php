@@ -8,7 +8,7 @@ $cs->registerCssFile('/css/sap.css');
 $cs->registerScriptFile('/js/knockout-2.2.1.js', CClientScript::POS_END);
 $cs->registerScriptFile('/js/sap.js', CClientScript::POS_END);
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+$this->pageTitle=Yii::app()->name . ' - Home page';
 $this->breadcrumbs=array(
 	'Status check',
 );?>

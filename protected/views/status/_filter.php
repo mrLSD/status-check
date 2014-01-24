@@ -1,8 +1,13 @@
 <?php
+// Check and set filters data
 if( isset( $this->user['filter']) ){
 	$f_all = ( $this->user['filter']['all'] ) ? "checked" : "";
 	$f_online = ( $this->user['filter']['online'] ) ? "checked" : "";
 	$f_status = ( $this->user['filter']['status'] ) ? "checked" : "";
+} else {
+	$f_all = "checked";
+	$f_online = "checked";
+	$f_status = "checked";
 } ?>
 <a data-bind="click: changeFilter" href="#">Notifications filter</a>
 <div id="filter-data" style="display: none">
